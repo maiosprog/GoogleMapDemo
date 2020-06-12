@@ -1,5 +1,7 @@
 package com.abc.googlemapdemo;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 
 import androidx.fragment.app.FragmentActivity;
@@ -11,6 +13,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -44,5 +50,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(rtvLiberia).title("RTV Liberia"))
                 .setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(rtvLiberia));
+
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Address> addresses = null;
+        try {
+            addresses = geocoder.getFromLocation(10.6088762, -85.4326206, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //Add this code.
+        Address obj = addresses.get(0);
+        System.out.println("*****************************************************");
+        System.out.println(obj.getCountryName() + " - "+ obj.getCountryCode()
+                + "- " + obj.getAddressLine(0) +" - "+ obj.getLocality() + "-"
+                + obj.getSubLocality() + "-" + obj.getSubAdminArea() );
     }
 }
